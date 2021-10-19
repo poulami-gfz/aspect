@@ -97,27 +97,36 @@ namespace aspect
       evaluate_vector_field(const DataPostprocessorInputs::Vector<dim> &input_data,
                             std::vector<Vector<double> > &computed_quantities) const
       {
+//         const std::vector<double>solution_values= input_data.solution_values;
         const unsigned int n_quadrature_points = input_data.solution_values.size();
         Assert (computed_quantities.size() == n_quadrature_points, ExcInternalError());
         Assert (computed_quantities[0].size() == dim*dim + dim, ExcInternalError());
         Assert (input_data.solution_values[0].size() == this->introspection().n_components,   ExcInternalError());
         Assert (input_data.solution_gradients[0].size() == this->introspection().n_components,  ExcInternalError());  
-        Assert(this->introspection().compositional_name_exists(strain_xx),
-                          ExcMessage("No compositional field with name <" +
+        Assert(this->introspection().compositional_name_exists("strain_xx"),
+                          ExcMessage("strain_xx <" +
                                      field_name +
                                      "> exists for which you want to visualize the principal strain."));
-        Assert(this->introspection().compositional_index_for_name(strain_xx) == 0, ExcMessage("The strain components should be the first compositional fields."))
+        Assert(this->introspection().compositional_index_for_name("strain_xx") == 0, ExcMessage("The strain components should be the first compositional fields."))
 
+//                 // Set use_strain_rates to true since the compaction viscosity might also depend on the strain rate.
+//         MaterialModel::MaterialModelInputs<dim> in(input_data,
+//                                                    this->introspection());
+//         MaterialModel::MaterialModelOutputs<dim> out(n_quadrature_points,
+//                                                      this->n_compositional_fields());
+// 
+//         this->get_material_model().evaluate(in, out);
+        
           // Assign the strain components to the compositional fields reaction terms.
           // If there are too many fields, we simply fill only the first fields with the
           // existing strain rate tensor components.
-          for (unsigned int q=0; q < in.n_evaluation_points(); ++q)
+          for (unsigned int q=0; q < n_quadrature_points; ++q)
             {
               // Convert the compositional fields into the tensor quantity they represent.
               Tensor<2,dim> strain;
               for (unsigned int i = 0; i < Tensor<2,dim>::n_independent_components ; ++i)
               {
-                strain[Tensor<2,dim>::unrolled_to_component_indices(i)] = in.composition[q][i];
+                strain[Tensor<2,dim>::unrolled_to_component_indices(i)] = input_data.solution_values[q][this->introspection().component_indices.compositional_fields[i]];
               }
 
             const std::array<std::pair<double, Tensor<1,dim>>, dim> principal_straines_and_directions = eigenvectors(symmetrize(strain));
@@ -142,12 +151,12 @@ namespace aspect
     
 
           
-      template <int dim>
-      void
-      PrincipalStrain<dim>::
-      declare_parameters (ParameterHandler &prm)
-      {
-      }
+//       template <int dim>
+//       void
+//       PrincipalStrain<dim>::
+//       declare_parameters (ParameterHandler &prm)
+//       {
+//       }
 
       template <int dim>
       void
@@ -157,16 +166,20 @@ namespace aspect
             {
               const std::string field_name = prm.get("Names of fields");
 
-////             AssertThrow(this->introspection().compositional_name_exists(field_name),
+////             AssertThrow(this->introspection().compositional_name_exists("strain_xx"),
  ///                         ExcMessage("No compositional field with name <" +
-//                                     field_name +
+//                                     "strain_xx" +
 //                                     "> exists for which you want to visualize the principal strain."));
 
-              compositional_field = this->introspection().compositional_index_for_name(field_name);
+//               int compositional_field = this->introspection().compositional_index_for_name("strain_xx");
             }
             prm.leave_subsection();
       }          
-          
+        
+        // average the values if requested
+      // const auto &viz = this->get_postprocess_manager().template get_matching_postprocessor<Postprocess::Visualization<dim> >();
+       //if (!viz.output_pointwise_stress_and_strain())
+        // average_quantities(computed_quantities);   
       }
 
 
