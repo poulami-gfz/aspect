@@ -103,10 +103,10 @@ namespace aspect
         Assert (computed_quantities[0].size() == dim*dim + dim, ExcInternalError());
         Assert (input_data.solution_values[0].size() == this->introspection().n_components,   ExcInternalError());
         Assert (input_data.solution_gradients[0].size() == this->introspection().n_components,  ExcInternalError());  
-        Assert(this->introspection().compositional_name_exists("strain_xx"),
-                          ExcMessage("strain_xx <" +
-                                     field_name +
-                                     "> exists for which you want to visualize the principal strain."));
+//        Assert(this->introspection().compositional_name_exists("strain_xx"),
+//                         ExcMessage("strain_xx <" +
+//                                     field_name +
+//                                     "> exists for which you want to visualize the principal strain."));
         Assert(this->introspection().compositional_index_for_name("strain_xx") == 0, ExcMessage("The strain components should be the first compositional fields."))
 
 //                 // Set use_strain_rates to true since the compaction viscosity might also depend on the strain rate.
@@ -164,7 +164,7 @@ namespace aspect
       {
             prm.enter_subsection("Compositional fields");
             {
-              const std::string field_name = prm.get("Names of fields");
+//              const std::string field_name = prm.get("Names of fields");
 
 ////             AssertThrow(this->introspection().compositional_name_exists("strain_xx"),
  ///                         ExcMessage("No compositional field with name <" +
