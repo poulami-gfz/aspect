@@ -632,17 +632,17 @@ namespace aspect
                 case DeformationTypeSelector::OlivineAFabric:
                   deformation_type =  DeformationType::OlivineAFabric;
                   break;
-                case DeformationTypeSelector::OlivineBFabric:
-                  deformation_type =  DeformationType::OlivineBFabric;
+                case DeformationTypeSelector::OlivineAFabric:
+                  deformation_type =  DeformationType::OlivineAFabric;
                   break;
-                case DeformationTypeSelector::OlivineCFabric:
-                  deformation_type =  DeformationType::OlivineCFabric;
+                case DeformationTypeSelector::OlivineAFabric:
+                  deformation_type =  DeformationType::OlivineAFabric;
                   break;
-                case DeformationTypeSelector::OlivineDFabric:
-                  deformation_type =  DeformationType::OlivineDFabric;
+                case DeformationTypeSelector::OlivineAFabric:
+                  deformation_type =  DeformationType::OlivineAFabric;
                   break;
-                case DeformationTypeSelector::OlivineEFabric:
-                  deformation_type =  DeformationType::OlivineEFabric;
+                case DeformationTypeSelector::OlivineAFabric:
+                  deformation_type =  DeformationType::OlivineAFabric;
                   break;
                 case DeformationTypeSelector::Enstatite:
                   deformation_type =  DeformationType::Enstatite;
@@ -905,11 +905,11 @@ namespace aspect
           {
             if (stress > (625. - 2.5 * water_content)*MPa)
               {
-                return DeformationType::OlivineBFabric;
+                return DeformationType::OlivineAFabric;
               }
             else
               {
-                return DeformationType::OlivineDFabric;
+                return DeformationType::OlivineAFabric;
               }
           }
         else
@@ -922,72 +922,73 @@ namespace aspect
               {
                 if (stress < (500.0 + ec_line_slope*-100. + ec_line_slope * water_content)*MPa)
                   {
-                    return DeformationType::OlivineEFabric;
+                    return DeformationType::OlivineAFabric;
                   }
                 else
                   {
-                    return DeformationType::OlivineCFabric;
+                    return DeformationType::OlivineAFabric;
                   }
               }
           }
       }
 
       template<int dim>
-      std::array<double,4>
+      std::array<double,5>
       LPO<dim>::reference_resolved_shear_stress_from_deformation_type(DeformationType deformation_type, double max_value) const
       {
-        std::array<double,4> ref_resolved_shear_stress;
+        std::array<double,5> ref_resolved_shear_stress;
         switch (deformation_type)
           {
             // from Kaminski and Ribe, GJI 2004.
             case DeformationType::OlivineAFabric :
-              ref_resolved_shear_stress[0] = 1;
-              ref_resolved_shear_stress[1] = 2;
+              ref_resolved_shear_stress[0] = 3;
+              ref_resolved_shear_stress[1] = 3;
               ref_resolved_shear_stress[2] = 3;
-              ref_resolved_shear_stress[3] = max_value;
-              break;
-
-            // from Kaminski and Ribe, GJI 2004.
-            case DeformationType::OlivineBFabric :
-              ref_resolved_shear_stress[0] = 3;
-              ref_resolved_shear_stress[1] = 2;
-              ref_resolved_shear_stress[2] = 1;
-              ref_resolved_shear_stress[3] = max_value;
-              break;
-
-            // from Kaminski and Ribe, GJI 2004.
-            case DeformationType::OlivineCFabric :
-              ref_resolved_shear_stress[0] = 3;
-              ref_resolved_shear_stress[1] = max_value;
-              ref_resolved_shear_stress[2] = 2;
               ref_resolved_shear_stress[3] = 1;
+              ref_resolved_shear_stress[4] = 1;
               break;
+
+            // from Kaminski and Ribe, GJI 2004.
+           // case DeformationType::OlivineBFabric :
+            //  ref_resolved_shear_stress[0] = 3;
+            //  ref_resolved_shear_stress[1] = 2;
+            //  ref_resolved_shear_stress[2] = 1;
+            //  ref_resolved_shear_stress[3] = max_value;
+            //  break;
+
+            // from Kaminski and Ribe, GJI 2004.
+          //  case DeformationType::OlivineCFabric :
+          //    ref_resolved_shear_stress[0] = 3;
+          //    ref_resolved_shear_stress[1] = max_value;
+          //    ref_resolved_shear_stress[2] = 2;
+          //    ref_resolved_shear_stress[3] = 1;
+          //    break;
 
             // from Kaminski and Ribe, GRL 2002.
-            case DeformationType::OlivineDFabric :
-              ref_resolved_shear_stress[0] = 1;
-              ref_resolved_shear_stress[1] = 1;
-              ref_resolved_shear_stress[2] = max_value;
-              ref_resolved_shear_stress[3] = 3;
-              break;
+       //     case DeformationType::OlivineDFabric :
+       //       ref_resolved_shear_stress[0] = 1;
+       //       ref_resolved_shear_stress[1] = 1;
+       //       ref_resolved_shear_stress[2] = max_value;
+       //       ref_resolved_shear_stress[3] = 3;
+       //       break;
 
             // Kaminski, Ribe and Browaeys, JGI, 2004 (same as in the matlab code)
-            case DeformationType::OlivineEFabric :
-              ref_resolved_shear_stress[0] = 2;
-              ref_resolved_shear_stress[1] = 1;
-              ref_resolved_shear_stress[2] = max_value;
-              ref_resolved_shear_stress[3] = 3;
-              break;
+      //      case DeformationType::OlivineEFabric :
+      //        ref_resolved_shear_stress[0] = 2;
+      //        ref_resolved_shear_stress[1] = 1;
+     //         ref_resolved_shear_stress[2] = max_value;
+     //         ref_resolved_shear_stress[3] = 3;
+      //        break;
 
             // from Kaminski and Ribe, GJI 2004.
             // Todo: this one is not used in practice, since there is an optimalisation in
             // the code. So maybe remove it in the future.
-            case DeformationType::Enstatite :
-              ref_resolved_shear_stress[0] = max_value;
-              ref_resolved_shear_stress[1] = max_value;
-              ref_resolved_shear_stress[2] = max_value;
-              ref_resolved_shear_stress[3] = 1;
-              break;
+   //         case DeformationType::Enstatite :
+   //           ref_resolved_shear_stress[0] = max_value;
+    //          ref_resolved_shear_stress[1] = max_value;
+    //          ref_resolved_shear_stress[2] = max_value;
+     //         ref_resolved_shear_stress[3] = 1;
+    //          break;
 
             default:
               break;
@@ -1514,24 +1515,29 @@ namespace aspect
             const double rhos1 = std::pow(tau[index_max_q],exponent_p-stress_exponent) *
                                  std::pow(std::abs(gamma*beta[index_max_q]),exponent_p/stress_exponent);
 
-            const double rhos2 = std::pow(tau[index_intermediate_q],exponent_p-stress_exponent) *
-                                 std::pow(std::abs(gamma*beta[index_intermediate_q]),exponent_p/stress_exponent);
+            const double rhos2 = std::pow(tau[index_intermediate1_q],exponent_p-stress_exponent) *
+                                 std::pow(std::abs(gamma*beta[index_intermediate1_q]),exponent_p/stress_exponent);
 
-            const double rhos3 = std::pow(tau[index_min_q],exponent_p-stress_exponent) *
+            const double rhos3 = std::pow(tau[index_intermediate2_q],exponent_p-stress_exponent) *
+                                 std::pow(std::abs(gamma*beta[index_intermediate2_q]),exponent_p/stress_exponent);
+
+            const double rhos4 = std::pow(tau[index_min_q],exponent_p-stress_exponent) *
                                  std::pow(std::abs(gamma*beta[index_min_q]),exponent_p/stress_exponent);
 
-            const double rhos4 = std::pow(tau[index_inactive_q],exponent_p-stress_exponent) *
+
+            const double rhos5 = std::pow(tau[index_inactive_q],exponent_p-stress_exponent) *
                                  std::pow(std::abs(gamma*beta[index_inactive_q]),exponent_p/stress_exponent);
+
 
             strain_energy[grain_i] = (rhos1 * exp(-nucleation_efficientcy * rhos1 * rhos1)
                                       + rhos2 * exp(-nucleation_efficientcy * rhos2 * rhos2)
                                       + rhos3 * exp(-nucleation_efficientcy * rhos3 * rhos3)
-                                      + rhos4 * exp(-nucleation_efficientcy * rhos4 * rhos4));
-
+                                      + rhos4 * exp(-nucleation_efficientcy * rhos4 * rhos4)
+                                      + rhos5 * exp(-nucleation_efficiency * rhos5 * rhos5));
 
             Assert(isfinite(strain_energy[grain_i]), ExcMessage("strain_energy[" + std::to_string(grain_i) + "] is not finite: " + std::to_string(strain_energy[grain_i])
-                                                                + ", rhos1 = " + std::to_string(rhos1) + ", rhos2 = " + std::to_string(rhos2) + ", rhos3 = " + std::to_string(rhos3)
-                                                                + ", rhos4= " + std::to_string(rhos4) + ", nucleation_efficientcy = " + std::to_string(nucleation_efficientcy) + "."));
+                                                                + ", rhos1 = " + std::to_string(rhos1) + ", rhos2 = " + std::to_string(rhos2) + ", rhos3 = " + std::to_string(rhos3) + ", rhos4 = " + std::to_string(rhos4)
+                                                                + ", rhos5= " + std::to_string(rhos5) + ", nucleation_efficientcy = " + std::to_string(nucleation_efficientcy) + "."));
 
             // compute the derivative of the cosine matrix a: \frac{\partial a_{ij}}{\partial t}
             // (Eq. 9, Kaminski & Ribe 2001)
@@ -1762,23 +1768,23 @@ namespace aspect
                       {
                         deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineAFabric;
                       }
-                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: B-fabric")
+                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: A-fabric")
                       {
-                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineBFabric;
+                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineAFabric;
                       }
-                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: C-fabric")
+                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: A-fabric")
                       {
-                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineCFabric;
+                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineAFabric;
                       }
-                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: D-fabric")
+                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: A-fabric")
                       {
-                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineDFabric;
+                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineAFabric;
                       }
-                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: E-fabric")
+                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: A-fabric")
                       {
-                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineEFabric;
+                        deformation_type_selector[mineral_i] = DeformationTypeSelector::OlivineAFabric;
                       }
-                    else if (temp_deformation_type_selector[mineral_i] ==  "Enstatite")
+                    else if (temp_deformation_type_selector[mineral_i] ==  "Olivine: A-fabric")
                       {
                         deformation_type_selector[mineral_i] = DeformationTypeSelector::Enstatite;
                       }
