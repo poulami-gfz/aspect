@@ -18,7 +18,7 @@
   <http://www.gnu.org/licenses/>.
 */
 
-#include <aspect/material_model/simple.h>
+#include <aspect/material_model/steinberger.h>
 #include <aspect/simulator_access.h>
 
 #include <deal.II/base/quadrature_lib.h>
@@ -31,7 +31,7 @@ namespace aspect
     using namespace dealii;
 
     template <int dim>
-    class FiniteStrain : public MaterialModel::Simple<dim>
+    class FiniteStrain : public MaterialModel::Steinberger<dim>
     {
       public:
         virtual void evaluate(const MaterialModel::MaterialModelInputs<dim> &in,
@@ -53,10 +53,10 @@ namespace aspect
     evaluate(const MaterialModel::MaterialModelInputs<dim> &in,
              MaterialModel::MaterialModelOutputs<dim> &out) const
     {
-      // First, we use the material descriptions of the 'simple' material model to fill all of the material
+      // First, we use the material descriptions of the 'steinberger' material model to fill all of the material
       // model outputs. Below, we will then overwrite selected properties (the reaction terms), which are
       // needed to track the finite strain.
-      Simple<dim>::evaluate(in, out);
+      Steinberger<dim>::evaluate(in, out);
 
       // We need the velocity gradient for the finite strain (they are not included in material model inputs),
       // so we get them from the finite element.
@@ -100,7 +100,7 @@ namespace aspect
     FiniteStrain<dim>::
     parse_parameters (ParameterHandler &prm)
     {
-      Simple<dim>::parse_parameters (prm);
+      Steinberger<dim>::parse_parameters (prm);
 
       AssertThrow(this->n_compositional_fields() >= (Tensor<2,dim>::n_independent_components),
                   ExcMessage("There must be at least as many compositional fields as independent components in the full "
@@ -116,8 +116,8 @@ namespace aspect
   {
     ASPECT_REGISTER_MATERIAL_MODEL(FiniteStrain,
                                    "finite strain",
-                                   "A simple material model that is like the "
-                                   "'Simple' model, but tracks the finite strain as compositional "
+                                   "A steinberger material model that is like the "
+                                   "'steinberger' model, but tracks the finite strain as compositional "
                                    "fields. More precisely, the model assumes that the first 4 (in 2D) "
                                    "or 9 (in 3D) compositional fields contain the components "
                                    "of the deformation gradient tensor, $\\mathbf F$, which can "
