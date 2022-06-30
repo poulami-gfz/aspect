@@ -250,7 +250,7 @@ namespace aspect
            * be squared without becomming infinite. The default is based on
            * Fortran D-Rex uses 1e60
            */
-          std::array<double,4>
+          std::array<double,5>
           reference_resolved_shear_stress_from_deformation_type(DeformationType deformation_type,
                                                                 double max_value = 1e60) const;
 

@@ -45,28 +45,28 @@ namespace aspect
 
         // The following values are directly form D-Rex.
         // Todo: make them a input parameter
-        // Stiffness matrix for Olivine (GigaPascals)
-        stiffness_matrix_olivine[0][0] = 320.71;
-        stiffness_matrix_olivine[0][1] = 69.84;
-        stiffness_matrix_olivine[0][2] = 71.22;
-        stiffness_matrix_olivine[1][1] = 197.25;
-        stiffness_matrix_olivine[1][2] = 74.8;
-        stiffness_matrix_olivine[2][2] = 234.32;
-        stiffness_matrix_olivine[3][3] = 63.77;
-        stiffness_matrix_olivine[4][4] = 77.67;
-        stiffness_matrix_olivine[5][5] = 78.36;
+        // Stiffness matrix for Bridgmanite (GigaPascals)
+        stiffness_matrix_olivine[0][0] = 515;
+        stiffness_matrix_olivine[0][1] = 117;
+        stiffness_matrix_olivine[0][2] = 117;
+        stiffness_matrix_olivine[1][1] = 525;
+        stiffness_matrix_olivine[1][2] = 139;
+        stiffness_matrix_olivine[2][2] = 435;
+        stiffness_matrix_olivine[3][3] = 179;
+        stiffness_matrix_olivine[4][4] = 202;
+        stiffness_matrix_olivine[5][5] = 175;
 
 
         // Stiffness matrix for Enstatite (GPa)
-        stiffness_matrix_enstatite[0][0] = 236.9;
-        stiffness_matrix_enstatite[0][1] = 79.6;
-        stiffness_matrix_enstatite[0][2] = 63.2;
-        stiffness_matrix_enstatite[1][1] = 180.5;
-        stiffness_matrix_enstatite[1][2] = 56.8;
-        stiffness_matrix_enstatite[2][2] = 230.4;
-        stiffness_matrix_enstatite[3][3] = 84.3;
-        stiffness_matrix_enstatite[4][4] = 79.4;
-        stiffness_matrix_enstatite[5][5] = 80.1;
+     //   stiffness_matrix_enstatite[0][0] = 236.9;
+     //   stiffness_matrix_enstatite[0][1] = 79.6;
+     //   stiffness_matrix_enstatite[0][2] = 63.2;
+     //   stiffness_matrix_enstatite[1][1] = 180.5;
+     //   stiffness_matrix_enstatite[1][2] = 56.8;
+     //   stiffness_matrix_enstatite[2][2] = 230.4;
+     //   stiffness_matrix_enstatite[3][3] = 84.3;
+     //   stiffness_matrix_enstatite[4][4] = 79.4;
+     //   stiffness_matrix_enstatite[5][5] = 80.1;
 
         // tensors of indices
         indices_tensor[0][0] = 0;
